@@ -1,0 +1,1589 @@
+% !Mode:: "TeX:UTF-8"
+
+\documentclass[11pt,
+			a4paper,
+			parskip=full,
+			toc=bib,
+			toc=idx,
+			toc=listof,
+			ngerman
+			listof=totoc,]{scrartcl}
+
+\usepackage{fontspec}
+\usepackage[]{unicode-math}
+
+\usepackage[ngerman]{babel}
+
+%===========
+\usepackage[a4paper]{geometry}
+% Vorgaben nach RFH
+\geometry{left=0.5cm, right=0.5cm, top=0.5cm, bottom = 1cm}
+
+%===========
+% Zitieren:
+% \autocite{<xxx>}
+% Zum Einfügen des Literaturverzeichnisses an das Ende des Dokuments:
+% \printbibliography
+
+% Anführgungszeichen
+% immer nach inputenc laden
+% optionen: 1. babel 2. quotes | guillemets | swiss
+%%\usepackage[babel,german=guillemets]{csquotes}
+\usepackage[style=numeric, bibstyle = authortitle, backend=bibtex8]{biblatex}
+%\usepackage[style=authortitle-icomp, bibstyle = authortitle, backend=bibtex8]{biblatex}
+%%\usepackage[style=apa, backend=biber]{biblatex}
+% Name der Datendatei ohne Endung
+\bibliography{bibliography}
+
+
+%===========
+%% if default latex classes are used
+% \usepackage{index}
+%% if Koma script classes are used
+% \usepackage{scrindex}
+% \usepackage{makeidx}
+\usepackage{splitidx}
+\makeindex
+
+%===========
+% Kopf und Fußzeilen
+\usepackage{scrpage2}
+\clearscrheadings
+\clearscrplain
+
+% Orientierung auf dem Blatt
+\pagestyle{scrplain}
+\ihead{}
+\chead{}
+\ohead{\pagemark}
+\cfoot{}
+
+%\renewcommand*\chapterpagestyle{scrheadings}
+
+%===========
+\usepackage{framed}
+
+
+%===========
+\usepackage{caption}
+
+
+%===========
+\usepackage{paralist}
+
+
+%===========
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.2,0.2,0.2}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+
+
+%===========
+\usepackage[unicode]{hyperref}
+
+
+%===========
+% Unterstützung für Tabellen
+\usepackage{tabularx}  
+
+%===========
+\newcommand{\ergaenzen}[1]{%
+	\tt{%
+		\textbf{%
+				\textcolor{red}{#1}%
+		}%
+	}%
+	\rm%
+}
+
+
+%===========
+\newcommand{\concept}[1]{%
+	\sf{%
+		\textbf{%
+				\textcolor{mymauve}{#1}%
+		}%
+	}%
+	\rm%
+}
+
+
+%===========
+\newenvironment{objDef}[1]%
+{	\begin{framed}
+	\textbf{Definition:} \concept{#1}
+	\compress}%
+{\end{framed}}
+
+
+%===========
+\newenvironment{objProp}[2]%
+{	\begin{framed}
+	\textbf{Definition:} \concept{#1},\concept{#2}}%
+{\end{framed}}
+
+
+%===========
+\usepackage[]{algorithmic}
+
+\newenvironment{algo}[1]%
+{	\begin{framed}
+	\textbf{Algorithmus:} \concept{#1}}%
+{\end{framed}}
+
+
+%===========
+\newenvironment{cmt}%
+{\color{mygray} § }
+{\color{black}}
+
+
+%===========
+\newenvironment{qtn}%
+{\color{yellow} ? }
+{\color{black}}
+
+%===========
+\newenvironment{expl}%
+{\color{red}}
+{\color{black}}
+
+\usepackage{textcomp}
+
+%===========
+% Reduce line spacing
+\linespread{0.7}
+
+\usepackage[compact]{titlesec}
+\titlespacing{\section}{0pt}{2ex}{1ex}
+\titlespacing{\subsection}{0pt}{1ex}{0ex}
+\titlespacing{\subsubsection}{0pt}{0.5ex}{0ex}
+
+\newcommand{\compress}{\vspace{-1em}}
+
+
+\pagenumbering{Roman}
+
+
+\begin{document}
+
+\pagestyle{scrheadings}
+\ihead{}
+\chead{}
+\ohead{\pagemark}
+\cfoot{}
+
+\pagenumbering{arabic}
+
+\newpage
+\section{Formale Sprachen}
+%-------------------------------------------------------------------------------
+\compress
+\begin{objDef}{Alphabet}
+
+Ein Alphabet Σ ist eine endliche, nichtleere Menge von Symbolen.
+\end{objDef}
+
+%-------------------------------------------------------------------------------
+\compress
+
+\compress
+\begin{objDef}{Zeichenkette}
+
+Eine Zeichenkette (auch Wort) über einem Alphabet Σ ist eine endliche
+Folge von Elementen aus Σ.\\
+Definition der Menge aller Wörter über einem Alphabet:
+\compress
+\begin{compactenum}
+  \item Wenn $a  ∈  Σ$ dann $a ∈  Σ^*$
+  \item Konkatenation: Wenn $v,w  ∈  Σ^*$ dann $v∘w  ∈  Σ^*$ (kurz: $vw$ für $v∘w$)
+  \item $ε ∈ Σ^*$
+\end{compactenum}
+\end{objDef}
+
+\compress
+\compress
+\begin{cmt}
+Die 'leere' Zeichenkette (auch 'leeres' Wort) $ε$ ist ein Wort über jedem Alphabet.
+\end{cmt}
+
+\compress
+\begin{cmt}
+Die Länge einer Zeichenkette $a$ wird mit $|a|$ angegeben.
+\compress
+\begin{compactitem}
+  \item $|ε| ~ = ~ 0$
+  \item $ Σ^* $: Menge aller Zeichenketten über $Σ $
+  \item $ Σ^k = \{ ~ w ~ | ~ w  ~ ∈  ~ Σ^*  ~ und  ~ |w| = k ~ \} $
+  \item $ Σ^+$: Menge aller nichtleeren Zeichenketten ($Σ* \setminus \{ε\} $)
+\end{compactitem}
+\end{cmt}
+
+
+
+%-------------------------------------------------------------------------------
+\begin{objDef}{Formale Sprache}
+
+Sei $Σ$ ein Alphabet, dann heißt jede Menge $L ~ ⊆ ~ Σ^*$ eine (formale) Sprache über $Σ$.
+
+\end{objDef}
+
+\compress
+\compress
+\begin{cmt}
+Formale Sprachen sind (oft) unendliche Objekte. Endliche Beschreibungskonzepte zur algo. Verarb.:
+\compress
+\begin{compactitem}
+  \item Akzeptierendes Konzept: Automaten
+  \item Erzeugendes Konzept: Grammatiken
+\end{compactitem}
+\end{cmt}
+
+\compress
+\begin{cmt}
+Definition von Sprachen:
+\compress
+\begin{compactitem}
+  \item Aufzählung der Elemente (im endlichen Fall)
+  \item Mengenvorschrift
+  \item Angabe einer Grammatik (beschreibend)
+  \item Angabe eines Automaten (akzeptierend)
+\end{compactitem}
+\end{cmt}
+
+
+
+%-------------------------------------------------------------------------------
+\begin{objDef}{Chomsky Hierarchie}
+
+Chomsky-Hierarchie: Hierarchie von Klassen formaler Grammatiken.
+Gliederung durch Einschränkungen der zulässigen Produktionsregeln.
+Grammatiken niedrigen Typs sind erzeugungsmächtiger als Grammatiken höheren Typs.
+
+\compress
+\small
+\begin{tabularx}{\textwidth}{l | X | l | l | X }
+Typ       & Beschränkungen                   & Bezeichnung            & Automaten                        & Abgeschl.\\
+\hline
+Typ 0     & keine                            &                        & Turingmaschine                   & $o,∩,∪,*$\\
+\hline
+Typ 1     & \begin{tabular}[x]{@{}c@{}}für alle $w1 -> w2$:\\ $|w1| ≤ |w2|$ \end{tabular}     & kontextsensitiv        & lin. besch. Automat       & $C,o,∩,∪,*$\\
+\hline
+Typ 2     & Typ 1 plus $w1 ∈ V$                & kontextfrei            & Kellerautomat                    & $o,∪,*$\\
+\hline
+Typ 3     & Typ 2 plus $w1 ∈ Σ ∪ ΣV$           & regulär                & endlicher Automat                & $C,o,∩,∪,*$
+\end{tabularx}
+\normalsize
+
+\end{objDef}
+
+
+\compress
+\compress
+\begin{expl}
+\begin{verbatim}
+G = (V,Σ,P,S), V = {S,B,C}, Σ = {a,b,c}
+Typ 0:                Typ 1:                 Typ 2:                Typ 3 (rechtslinear):
+P = { S → SaBC        P = { S → SaBC         P = { S → SaBC        P = { S → a
+    , Sa → aBc            , Sa → aBc             , S → aBc             , S → aB
+    , SBC → c             , aBv → CCc            , B → CCcB            , B → cB
+    , SaC → SSacB         , SaC → SSacB          , B → SSacB           , B → a
+    }                     }                      }				 }
+\end{verbatim}
+\end{expl}
+
+\compress
+\compress
+\begin{cmt}
+Es gilt: Typ 3 $⊂$ Typ 2 $⊂$ Typ 1 $⊂$ Typ 0.
+\end{cmt}
+
+%\compress
+%\begin{cmt}
+%Bezeichnung kontextsensitiv/kontextfrei:
+%Bei einer kontextfreien Regel A -> x kann die Variable A - unabhängig von dem Kontext in dem A steht -
+%bedinungslos durch x ersetzt werden.
+%Bei einer kontextsensitiven Grammtik sind Regeln der Art xAz -> uxv möglich.
+%A kann nur dann ersetzt werden wenn sie im kontext zwischen "u" und "v" steht.
+%\end{cmt}
+
+\compress
+\begin{cmt}
+Kontextfreie Grammatiken können unterteilt werden in 
+
+\compress
+\begin{compactitem}
+  \item linkslinearen Grammatiken (V → $VΣ ∪ Σ ∪ \{ε\}$:)
+  \item rechtslinearen Grammatiken (V → $ΣV ∪ Σ ∪ \{ε\}$:)
+\end{compactitem}
+\compress
+Rechtlineare und linkslineare Grammatiken sind gleich erzeugungsmächtig.
+\end{cmt}
+
+\compress
+\begin{cmt}
+Wegen $|w1| ~ ≤ ~ |w2|$ kann $ε$ bei Typ 1,2,3 Grammatiken nicht abgeleitet werden.\\
+$ε$-Sonderregel: Ist $ε ∈ L(G)$ so $S -> ε$ (S darf nicht mehr der rechter Seite einer Produktion vorkommen).
+\end{cmt}
+
+%-------------------------------------------------------------------------------
+\compress
+\begin{objDef}{Entscheidungsprobleme}
+
+Entscheidungsprobleme bei formalen Sprachen:
+\compress
+\begin{compactitem}
+  \item Wortproblem: gegeben $w,L$, $w ∈ L$?
+  \item Leerheitsproblem: ist $L = ∅$
+  \item Endlichkeitsproblem: ist $L$ endlich?
+  \item Schnittproblem: ist $L_1 ∩ L_2 = ∅$? 
+  \item Äquivalenzproblem: ist $L_1 = L_2$?
+\end{compactitem} 
+
+\end{objDef}
+
+%\subsection{Wortproblem}
+%Für Sprachen der Typen 1,2,3 ist das Wortproblem entscheidbar,
+%Da die Wortlänge bei der Ableitung immer zuhnehmen muss ->
+%Entscheidungsverfahren über Erzeugungsbaum möglich.
+
+%Es gibt Typ 0 Sprachen, die entscheidbar sind.
+
+
+
+%===============================================================================
+%\subsection{Automaten}
+%Automaten können Sprachen erkennen:
+%Die von einem Automaten erkannte Sprache besteht aus Zeichenketten,
+%deren Eingabe von einem Anfangs- in einen akzeptierenden Zustand führt.
+%Verschiedene Typen von Automaten entsprechen exakt verschiedenen Typen von Sprachen.
+
+%===============================================================================
+\newpage
+\subsection{Grammatiken}
+
+\compress
+\begin{objDef}{Grammatik}
+
+Eine Grammatik wird spezifiziert durch ein 4-Tupel: G = $(V,Σ,P,S)$
+
+\compress
+\begin{compactitem}
+  \item $V$ (Nichtterminalsymbole)   - Menge der Variablen.
+  \item $Σ$ (Terminalsymbole)        - Menge der Symbole im Alphabet.
+  \item $P$ (Produktionen)           - $P ⊆ (V ∪ Σ)^+ \times (V ∪ Σ)^*$ (Struktur: linke Seite → rechte Seite)
+  \item $S ∈ V$ (Startvariable)      - Symbol aus der Nichtterminalmenge.
+\end{compactitem}
+\compress
+Es gilt: $V ∩ Σ = ∅$
+
+\end{objDef}
+
+%-------------------------------------------------------------------------------
+\compress
+\compress
+\begin{objDef}{Übergangsrelation (für Grammatiken)}
+
+Seien $u,v ∈ (V ∪ Σ)^*$.
+$u ⇒ v$ ($u$ geht unmittelbar über in $v$) falls:
+\compress
+\begin{compactitem}
+  \item $u = xyz$
+  \item $v = xy'z$ mit $x,z ∈ (V ∪ Σ)^*$
+  \item $y → y' ∈ P$
+\end{compactitem}
+\compress
+Erweiterte Übergangsrelation $⇒^*$: transitive und reflexive Hülle von $⇒$.\\
+Die von G erzeugte Sprache ist $L(G) = \{ w ∈ Σ^* | S ⇒^* w \}$.
+
+\end{objDef}
+\compress
+\compress
+\begin{cmt}
+Eigentlich $⇒_G$ da diese Relation für jede Grammatik gesondert definiert werden muss.
+\end{cmt}
+
+\compress
+\begin{cmt}
+Wörter: Terminalsymbole und Nichtterminalsymbole -- Ein Wort das Nichtterminale enthält heißt Satzform.
+\end{cmt}
+
+%-------------------------------------------------------------------------------
+\compress
+\begin{objDef}{Ableitung}
+
+Ableitung (von $wn$): Folge von Wörtern $(w_0, w_1,w_2,...,w_n)$, $w_0 = S$, $w_n ∈ Σ*$ und
+$w0 ⇒ w1 ⇒ w2 ⇒ ... ⇒ wn$.
+
+\end{objDef}
+\compress
+\compress
+\begin{cmt}
+Ableiten kein deterministischer sondern nichtdeterministischer Prozess;
+die Relation $⇒$ ist i.A keine Funktion (linke Seite einer Produktion kommt mgl. mehrfach vor).
+\end{cmt}
+
+\compress
+\begin{cmt}
+Linksableitung: In jedem Schritt wird die am weitesten links vorkommende Variable durch Regelanwendung ersetzt.\\
+Rechtsableitung: In jedem Schritt wird die am weitesten rechts vorkommende Variable durch Regelanwendung ersetzt.
+\end{cmt}
+
+
+%%-------------------------------------------------------------------------------
+%\subsubsection{Erzeugungsbaum}
+%Der Prozess einer Ableitung kann durch einen Erzeugungsbaum visualisiert werden:
+
+%\begin{expl}
+%\begin{verbatim}
+%S → S * S
+%S → S + S
+%S → x                                      S
+%S → y                                      |
+%S → z                     ------------------------------------------------------
+                          %|                                 |        |    |    |
+                      %S   *   S                           S + S      x    y    z
+                      %|       |                           |   |
+  %-----------------------     -----------------------    ... ...
+  %|       |     |   |   |     |       |     |   |   |
+%S * S   S + S   x   y   z   S * S   S + S   x   y   z
+%\end{verbatim}
+%\end{expl}
+
+%\begin{cmt}
+%Den Blättern des Baumes sind dann die Wörter der erzeugten Sprache zugeordnet.\\
+%Es kann unendlich lange Pfade geben.\\
+%Es kann Pfade geben die nicht in ein Terminalwort abgeleitet werden können.
+%\end{cmt}
+
+
+%%\begin{qtn}
+%%Es können in den Blättern des Baumes doch sowohl Terminal- als auch Nichtterminalsymbole vorkommen???
+%%\end{qtn}
+%%-------------------------------------------------------------------------------
+
+\compress
+\begin{objDef}{Syntaxbaum}
+
+Ableitung eines Wortes $x$ in Typ-2 oder Typ-3 Gram. G: Syntaxbaum (Parsebaum) kann zugeordnet werden.\\
+Sei $x ~ ∈ ~ L(G)$ und sei $S = x_0 ⇒ x_1 ⇒ x_2 ⇒ ... ⇒ x_n = x$ eine Ableitung des Wortes $x$:
+\compress
+\begin{compactenum}
+\item S wird die Wurzel des Syntaxbaumes zugeordnet.
+\item Für $i = 1,2,\dots,n$: Variable $A$ durch Wort $z$ ersetzt, dann im Syntaxbaum $|z|$ viele Söhne von A, beschriftet mit Zeichen von z.
+\end{compactenum}
+\end{objDef}
+
+%Syntaxbäume einer regulären Grammatik sehen immer wie folgt aus:
+
+%\begin{expl}
+%\begin{verbatim}
+     %S
+     %| \
+     %a1 A1
+        %| \
+        %a2 ...
+             %\
+             %A(n-2)
+              %| \
+         %a(n-1) A(n-1)
+                 %|
+                %an
+%\end{verbatim}
+%\end{expl}
+
+\compress
+\compress
+\compress
+\begin{expl}
+\begin{verbatim}
+S → S * S                                      S                             S   
+S → S + S                                     /|\                           /|\
+S → x          S                             / | \                         / | \
+S → y         /|\                           S  +  S                       S  *  S
+S → z        / | \                          |    /|\                     /|\    |
+            S  +  S                         x   S * S                   S + S   z
+            |     |                             |   |                   |   |
+            x     y                             y   z                   x   y
+Versch. Ableitungen kann derselbe        Manchmal gibt es strukturgleiche Syntaxbäume 
+Syntaxbaum zugeordnet sein.              für dasselbe Wort.
+1) S → S + S → x + S → x + y
+2) S → S + S → S + y → x + y
+\end{verbatim}
+\end{expl}
+
+\compress
+\compress
+\begin{cmt}
+Jedem Sytaxbaum entspricht eindeutig eine Linksableitung und eine Rechtsableitung.
+\end{cmt}
+
+\compress
+\begin{cmt}
+Einer Ableitungen kann
+\begin{compactitem}
+\compress
+  \item Für jedes Wort nur ein Syntaxbaum zugeordnet werden: eindeutige Grammatik
+  \item Für eine Wort mehrere Syntaxbäume zugeordnet werden: mehrdeutige Grammatik
+\end{compactitem}
+\compress
+Eine kontextfreie Sprache $A$ heißt inheränt mehrdeutig wenn jede Grammatik $G$
+mit $L(G) = A$ mehrdeutig ist.
+\end{cmt}
+
+
+%%-------------------------------------------------------------------------------
+\compress
+\subsubsection{Backus-Naur-Form BNF}
+\compress
+Formalismus zum Niederschreiben von kontextfreien Grammatiken (Typ 2).
+\compress
+\compress
+\begin{verbatim}
+1. Regeln bei denen linke Seite gleich:         2. Strukturähnliche Regeln mit optionalem Wort:
+     A → a1                                          A → abc
+     A → a2                                          A → ac
+     ...                                             -----------BNF:
+     -------------------BNF:                         A → a[b]c
+     A → a1 | a2 | ...
+3. Regeln in denen beliebig oft wiederholbare Wörter vorkommen:
+     A → ac
+     A → aBc
+     B → b
+     B → Bb
+     -----------BNF:
+     A → a{b}c                                    (In orginal BNF '$::=$' statt '$→$')     
+\end{verbatim}
+
+
+
+
+
+
+\newpage
+\section{Reguläre Sprachen}
+\compress
+Erzeugendes Konzept: reguläre Grammatiken;  \\
+Beschreibendes Konzept: reguläre Ausdrücke; \\ 
+Akzeptierendes Konzept: endliche Automaten; \\
+\compress
+\begin{objDef}{Endlicher Automat}
+
+Ein endlicher Automat M wird spezifiziert durch ein 5-Tupel: $M = (Q,Σ,δ,z_0,F)$
+\compress
+\begin{compactitem}
+  \item $Q$ (Zustandsmenge)              
+  \item $Σ$ (Eingabealphabet)           
+  \item $δ$ (Überführungsfunktion) - abhängig vom Automatentyp      
+  \item $q_0$ (Startzustand)       
+  \item $F$ (Endzustände)
+\end{compactitem}
+\compress
+Es gilt: $q0 ∈ Q$, $F ⊆ Q$, $Q ∩ Σ = ∅$.\\
+Zustansüberführungsfunktion $δ$: 'Programm' des Automaten.\\
+Notation der Zustandsübergangsfunktion: Funktionszeile $δ(s,a) = x$  $∨$ Tripel $(s,a,x)$  $∨$ Tabelle\\
+Erweiterte Zustandsüberführungsfunktion $δ^*$: Erweiterung $δ$ von Einzelzeichen zu Wörtern.
+
+%-------------------------------------------------------------------------------
+\compress
+\begin{objDef}{Deterministischer endlicher Automat (DEA)}
+
+Automat deterministisch: zu einem Ausgangszustand und einem Symbol höchstens ein Folgezustand.\\
+$δ_{DEA}:       Q \times Σ → Q$\\ 
+$δ^*_{DEA}:      Q \times Σ* → Q$\\
+$δ^*(q,ε) = q$\\
+$δ^*(q,ax) = δ^*(δ(q,a),x)$\\
+mit $q ∈ Q$, $a ∈ Σ$, $x ∈ Σ*$.\\
+Die von einem DEA akzeptierte Sprache ist:
+$L(M) = \{x ∈ Σ^* | δ^*(q-0,x) ∈ F\}$
+\end{objDef}
+
+%-------------------------------------------------------------------------------
+\compress
+\compress
+\begin{objDef}{Nicht-Deterministischer endlicher Automat (NEA)}
+
+Automat nicht-deterministisch: zu (mindestens) einem  Ausgangszustand und Symbol mehrere Folgezustände.\\
+$δ_{NEA}:      \t Q x Σ -> P(Q)$\\
+$δ_{NEA}^*:    \t Q x Σ* -> P(Q)$\\
+$δ_{NEA}^*(Q',ε) = Q'$ für alle $Q' ⊆ Q$\\
+$δ_{NEA}^*(Q',ax) = ∪(δ*(δ(q,a),x))$, $q ∈ Q'$\\ 
+mit $Q' ⊆ Q, a ∈ Σ, x ∈ Σ*$ \\
+Ein Wort wird von einem NEA akzeptiert, wenn die erweiterte 
+Übergangsfunktion eine Zustandsfolge durchlaufen hat die in einen Endzustand führt
+(Andere Zustandsfolgen können auch auf Nicht-Endzustände führen). \\
+Die von einem NEA akzeptierte Sprache ist:\\
+$L(M) = \{x ∈ Σ^* | δ^*(q_0,x) ∩ F ≠ ∅ \}$
+
+\end{objDef}
+
+
+%-------------------------------------------------------------------------------
+\compress
+\compress
+\begin{objDef}{$ε$-Hülle}
+
+Die $ε$-Hülle eines Zustands $q$ ($ε$-Hülle($q$)), ist die kleinste Menge von 
+Zuständen für die gilt:
+\compress
+\begin{compactitem}
+  \item $q ∈ ε$-Hülle($q$)
+  \item wenn $p ∈ ε$-Hülle($q$) und $r$ von $p$ aus durch $ε$-Eingabe erreichbar,
+          so ist $r$ in $ε$-Hülle($q$).
+\end{compactitem}
+\compress
+Erweiterung der Definition auf Zustandsmengen:\\
+$ε$-Hülle($Q$) = $∪(ε$-Hülle($q$)) für alle $q ∈ Q$
+
+\end{objDef}
+
+%-------------------------------------------------------------------------------
+\compress
+\compress
+\begin{objDef}{Nicht-deterministischer endlicher Automat mit $ε$-Übergängen}
+
+Ein nichtdeterministischer Automat mit $ε$-Übergängen wird spezifiziert 
+wie ein NEA mit dem einzigen Unterschied, dass das leere Wort $ε$ mit 
+in den Definitionsbereich von $δ$ aufgenommen wird:\\
+$δ_{NEA}:   \t Q \times Σ ∪ \{ε\}  -> P(Q)$\\
+$δ^*_{εNEA}: \t Q \times Σ^* -> P(Q)$ \\
+$δ^*_{εNEA}(q,ε) = ε-Hülle(q)$ für alle $Q' ⊆ Q$ \\
+$δ^*_{εNEA}(q,ax) = ∪(ε-$Hülle$(δ(q,a),x))$, \\ 
+mit $p ∈ δ^*(q,w)$, $Q' ⊆ Q$, $a ∈ Σ$, $x ∈ Σ^*$. \\
+\end{objDef}
+
+%-------------------------------------------------------------------------------
+
+
+\end{objDef}
+
+%===============================================================================
+
+\compress
+\begin{cmt}
+Satz: Jede durch einen endlichen Automaten erkennbare Sprache ist regulär.
+\end{cmt}
+
+\compress
+\begin{cmt}
+Satz: Gleichwertigkeite der Automatenkonzepte ...
+\ergaenzen{ERÄNZEN!!!!}
+\end{cmt}
+
+\compress
+\begin{cmt}
+Satz: Die Automaten $A1$ und $A2$ heißen äquivalent, falls $L(A1) ~ = ~ L(A2)$.
+\end{cmt}
+
+\compress
+\begin{cmt}
+Visualisierung endlicher Automaten: Zustandsgraph (Knoten = Zustände, Kanten: Zustandsübergänge aus $δ$)
+\end{cmt}
+
+\compress
+\begin{cmt}
+Konvention: Wenn bei DEA Eingaben fehlen führen diese zu Fehlerknoten.
+\end{cmt}
+
+
+%-------------------------------------------------------------------------------
+
+%\begin{expl}
+%\begin{verbatim}
+%Sei M = (Z,Σ,δ,z0,F), wobei
+    %Z = {z0, z1, z2, z3}
+    %Σ = {a,b}
+    %F = {z3}
+    %δ(z0,a) = z1
+    %δ(z0,b) = z2
+    %δ(z1,a) = z3
+    %δ(z1,b) = z2
+    %δ(z2,a) = z1
+      %...
+%\end{verbatim}
+%\end{expl}
+
+
+
+% ==============================================================================
+\newpage
+\begin{objDef}{Regulärer Ausdruck}
+
+Sei $Σ$ ein Alphabet. Die Menge der regulären Ausdrücke $REXP_Σ$ über $Σ$ ist 
+induktiv definiert:
+\compress
+\begin{compactitem} 
+  \item $∅$ ist ein regulärer Ausdruck
+  \item $ε$ ist ein regulärer Ausdruck
+  \item für jedes $a ∈ Σ $ ist $a$ ein regulärer Ausdruck
+  \item wenn $a$ und $b$ reguläre Ausdrücke sind, dann auch
+  \begin{compactitem}
+    \item Konkatenation: \t $ab$
+    \item Selektion:     \t $(a+b)$
+    \item Wiederholung:  \t $(a)^*$ und $(b)^*$
+  \end{compactitem}
+\end{compactitem}
+\compress
+Einem regulären Ausdruck $γ$ wird induktiv über den Aufbau eine Sprache  $L(γ)$ zugeordnet.\\
+Die Menge der durch reguläre Ausdrücke beschreibbaren Sprachen ist genau die Menge der regulären Sprachen.
+\end{objDef}
+
+%\compress
+%\begin{cmt}
+%Sei L eine reguläre Sprache. Es gibt einen endlichen Automaten der L akzeptiert.
+%Beweis durch Induktion über den Ausdrucksaufbau $E$:
+%IB: $E = ∅ $, $E = ε $, $E = a $ dazu akzeptierende Automaten.
+%IV: Seien $E_1$ und $E_2$ reguläre Ausdrücke für die Automaten $M_1$ und $M_2$ konstruiert werden können. 
+%IS: Es können endliche Automaten für Vereinigung, Konkatenation und Kleene-Abschluss gebildet werden.
+     %Damit existieren Automaten für $E_1 + E_2$, $E_1E_2$, $E_1^*$ und $E_2^*$.
+
+%\end{cmt}
+
+%\compress
+%\begin{cmt}
+%Alle endlichen Sprachen sind durch reguläre Ausdrücke beschreibbar:\\
+%Die Menge der durch reguläre Ausdrücke beschreibbaren Sprachen ist genau die Menge der regulären Sprachen.
+%\end{cmt}
+
+\compress
+\compress
+\begin{algo}{Rechenregeln für reguläre Ausdrücke.}
+
+\compress
+\begin{tabularx}{\textwidth}{r c l X}
+
+R + S          & = &     S + R               & Kommutativität \\
+(R + S) + T    & = &     R + (S + T)         & Assoziativität Selektion \\ 
+(R S) T        & = &     R (S T)             & Assoziativität Konkatenation \\
+$∅$ + R        & = &     R + $∅$ = R         & neutrales Element Selektion \\
+$ε$ R          & = &     R $ε$ =   R         & neutrales Element Konkatenation \\
+$∅$ R          & = &     R $∅$ = $∅$         & Nulloperator Konkatenation \\
+R (S + T)      & = &     RS + RT             & Distributivität \\
+(S + T)  R     & = &     SR + TR             & \\
+R + R          & = &     R                   & Idempotenz Selektion \\
+(R*)*          & = &     R*                  & \\
+($ε$ + R)*     & = &     R*                  & \\
+$∅$ *          & = &     $ε$                 & \\
+$ε$*           & = &     $ε$                 & \\
+($ε$ + R)R*    & = &     R*($ε$ + R) = R*    & \\
+RR*            & = &     R*R                 & \\
+R* + R         & = &     R*                  & \\
+$ε$ + RR*      & = &     R*                  & \\
+\end{tabularx}
+\end{algo}
+
+
+%-------------------------------------------------------------------------------
+\compress
+\compress
+\begin{algo}{EA → RA (Zustandseliminationsverfahren)}
+
+\compress
+geg.: EA A\\
+IB: $k=0$ (direkter Übergang zwischen zwei Zuständen; jeder Zustand auf sich selbst: $ε$; mehrere: Vereinigung($+$)) \\
+IV: Alle regulären Ausdrücke $R_{i,j}^k$ \\
+IS: $R_{i,j}^{k+1} = R_{i,j}^k + R_{i,k+1}^k(R_{k+1,k+1}^k)^*R_{k+1,j}^k$ \\
+Regulärer Ausdruck für L(A): Vereinigung aller reg.A die vom Startzustand in finalen Zustand führen.
+\end{algo}
+
+\compress
+\compress
+\begin{expl}
+\begin{minipage}[t]{1\linewidth}
+  \begin{minipage}[t]{0.35\linewidth}
+
+DEA A = $(\{1,2\},\{a,b\},δ,1,\{2\})$ mit \\
+δ(1,a)=δ(2,a)=1 \\
+δ(1,b)=δ(2,b)=2
+   \end{minipage}
+   \begin{minipage}[t]{0.6\linewidth}
+
+\compress
+\begin{tabular}{ |l l |l |l| l|}
+\hline
+i & j & $k=0$       & $k=1$                                       & $k=2$                                      \\
+\hline              
+1 & 1 & $(ε+a)$     &                                             &                                            \\
+1 & 2 &   $b$       & $R_{12}^0 + R_{11}^0(R_{11}^0)^*R_{12}^0$   &  $R_{12}^1 + R_{12}^1(R_{22}^1)^*R_{22}^1$ \\
+2 & 1 &   $a$       &                                             &                                            \\
+2 & 2 & $(ε+b)$     & $R_{22}^0 + R_{21}^0(R_{11}^0)^*R_{12}^0$   &									 \\                  
+\hline
+\end{tabular}
+
+Nur notwendige Zustände sind eingetragen!
+ \end{minipage}
+\end{minipage}
+\end{expl}
+
+\compress
+\begin{algo}{Pumping-Lemma für reguläre Sprachen (uvw-Theorem)}
+
+\compress
+Sei L reg. Sprache. Dann gibt es Zahl n, sodass alle Wörter $x \in L$ mit $|x| ≥ n$ zerlegen lassen
+in $x = uvw$, dass gilt:
+\compress
+\begin{compactitem}
+  \item $|v| ≥ 1$
+  \item $|uv| ≤ n$
+  \item für alle $i \in \{0,1,2,\dots\}:uv^iw \in L$
+\end{compactitem}
+\compress
+Widerspruchsbeweis nach Schema (zz.: L ist nicht regulär): \\
+Annahme l ist regulär, suchen ein Wort w aus L (abhängig von n), so dass sich aus dem Pumping-Lemma ergibt,
+dass auch ein w' in L sein müsste, von dem wir aber wissen, dass es nicht zu L gehört. Damit ist Ahnnahme das L regulär widerlegt. 
+\end{algo}
+
+\compress
+\compress
+\begin{expl}
+$L=\{a^ib^i|i ≥ 1\}$\\
+Angenommen $L$ wäre regulär. Sei n die Pumpingzahl.
+Betrachte $a^nb^n \in L$. Dieses Wort lässt sich nach Pumping Lemma in $uvw$ zerlegen.
+Aufgrund von Bedingung 2 kann v nur aus a's bestehen. Sei k > 0 die Anzahl der a's in v.
+Für beliebiges $j≥0$ muss $a^{n-k}a^{jk}b^n$ zu L gehören. Das führt für z.B $j=0$ zum Widerspruch 
+der Definition von L, denn $a^{n-k}b^n$ ist nicht in L. L ist nicht regulär. 
+
+
+
+
+\end{expl}
+
+%\compress
+%\compress
+%\begin{algo}{Pumping-Lemma für kontext-freie Sprachen}
+%\end{algo}
+
+
+% ==============================================================================
+
+
+\newpage
+\section{Kontextfreie Sprachen}
+\compress
+Erzeugendes Konzept: kontextfreie Grammatiken; Akzeptierendes Konzept: Kellerautomaten; \\
+\compress
+\begin{objDef}{ (nichtdeterministischer) Kellerautomat}
+
+Ein (nichtdeterministischer) Kellerautomat wird angegeben durch ein 6-Tupel: $A=(Q,Σ,Γ,δ,q_0,\#)$
+\compress
+\begin{compactitem}
+  \item $Q$ die Menge der Zustände 
+  \item $Σ$ das Eingabealphabet
+  \item $Γ$ das Kelleralphabet
+  \item $δ: Z \times (Σ ∪ \{ ε \}) \times Γ → P_e(Z \times Γ^*)$ die Überführungsfunktion
+  \item $q_0 \in Q$ der Startzustand
+  \item $\# \in Γ$ das unterste Kellerzeichen
+\end{compactitem} 
+
+\compress
+\begin{objDef}{Konfiguration eines Kellerautomat}
+
+'Momentaufnahme' des PDA: Konfiguration K eines Kellerautomaten: Tripel $k\in(Q \times Σ^* \times Γ^*)$.
+\compress
+\begin{compactenum}
+  \item momentaner Zustand
+  \item noch zu lesender Teil des Eingabewortes
+  \item aktueller Kellerinhalt
+\end{compactenum}
+\end{objDef}
+\compress
+\compress
+\begin{objDef}{Konfigurationsübergangsrelation}
+
+Die Konfigurationsübergangsrelation $⊢$ ist die kleinste Relation, sodass
+\compress
+\begin{compactitem}
+  \item $(z,a_1 \dots a_n, A_1 \dots A_m) ⊢ (z', a_2 \dots a_n, B_1 \dots B_kA_2 \dots A_m)$ falls $z,a_1,A_1 →i z',B_1 \dots B_k$
+  \item $(z,a_1 \dots a_n, A_1 \dots A_m) ⊢ (z', a_1 \dots a_n, B_1 \dots B_kA_2 \dots A_m)$ falls $z,ε,A_1 → z',B_1 \dots B_k$
+\end{compactitem}
+\compress
+Sei $⊢^*$ die reflexive und transitive Hülle von $⊢$.
+\end{objDef}
+\compress
+\compress
+Der Kellerautomat hat keine Endzustände. Wort akzeptiert, wenn der Keller nach Abarbeitung des Wortes leer:\\
+$L(A) = \{ x \in Σ^* | (q_0,x,\#) ⊢^* (z,ε,ε) \}$
+
+\end{objDef}
+
+\compress
+\compress
+\begin{expl}
+\begin{minipage}[t]{1\linewidth}
+  \begin{minipage}[t]{0.35\linewidth}
+    \begin{verbatim}
+Eingabeband   -> Leserichtung
+-------------------------
+  | i | n | p | u | t |   
+-------------------------  
+        ^ Lesekopf          
+        |                
+  -----------------    | B |
+  |               |    -----
+  | Kellerautomat |--> | C |
+  |               |    -----
+  -----------------    | # |
+                Keller -----  
+    \end{verbatim}
+  \end{minipage}
+  \begin{minipage}[t]{0.65\linewidth}
+    \begin{verbatim}
+Operationen des Kellerautomaten: d( z, a, A ) -> (z',B1...Bk)
+1.    : Für k=1 Ersetzung eingel. Symbol. 
+        Anzahl E. i. Keller gleich.
+          Bsp: z0,a,# -> z0,#
+2.Push: Für k>1 wird Sym.folge aus Kelleral. auf Keller abgelegt.
+        Keller wächst.
+          Bsp: z0,a,# -> z0,A#
+3.Pop:  Für K=0 wird dem Kellerspeicher ein Element entnommen.
+        Leeres Wort "" als Rückgabesymbol. Keller schrumpft.
+          Bsp: z0,a,# -> z0,""
+* eps-Übergänge: kein Zeichen wird gelesen.
+    Bsp: z0,"",# -> z0,A 
+    \end{verbatim}
+  \end{minipage}
+\end{minipage}
+\end{expl}
+%-------------------------------------------------------------------------------
+\begin{minipage}[t]{1\linewidth}
+  \begin{minipage}[t]{0.6\linewidth}
+    \begin{algo}{ktxf.Grammatik → Kellerautomat}
+	\compress
+      \begin{verbatim}
+G = ( {ab},{ST}, S, P)
+P = { S → TT
+    , S → a 
+    , T → SS
+    , T → b  }
+1. E-Übergänge für jede Regel der Grammatik:
+    S → TT   z1,ε,S → z1,TT
+    S → a    z1,ε,S → z1,a
+    T → SS   z1,ε,T → z1,SS
+    T → b    z1,ε,T → z1,b
+2. Übergänge, die erlauben in der Eingabe voranzurücken
+   wenn passendes Terminalsymbol oben im Stack:
+    z1,a,a -> z1,ε
+    z1,b,b -> z1,ε
+      \end{verbatim}
+	\compress
+    \end{algo}
+	\compress
+  \end{minipage}
+  \begin{minipage}[t]{0.4\linewidth}
+    \begin{expl}
+      \begin{verbatim}
+  Lauf eines DFA (Wort "abab")
+  K = ({z},{a,b},{A,B,#},d,z,#)
+  d = { z"# → z"
+      , za# → zA#, zb# → zB#
+      , zaA → zAA, zbB → zBB
+      , zaB → z" , zbA → z"  }              
+  1:           (z,abab,#)
+               /        \
+  2:     (z,abab,")   (z,bab,A#)
+            x            |
+  3:                  (z,ab,#)
+                      /      \
+  4:            (z,ab,")    (z,b,A#)
+                   x          |
+  5:                        (z,",#)
+                              |
+  6:                       (z,",")
+      \end{verbatim}
+    \end{expl}
+  \end{minipage}
+\end{minipage}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\compress
+\compress
+\section{Typ0-Sprachen}
+
+\compress
+Erzeugendes Konzept: Typ0-Grammatilen; Akzeptierendes Konzept: Turingmaschine; \\
+\compress
+\begin{objDef}{Turingmaschine}
+
+Eine Turingmaschine ist gegeben durch ein 7-Tupel: $M=(Q,Σ,Γ,δ,□,E)$ \\ 
+\compress
+\compress
+\begin{compactitem}
+  \item $Q$ die Menge der Zustände 
+  \item $Σ$ das Eingabealphabet
+  \item $Σ⊃Γ$ das Arbeitsalphabet
+  \item $δ: Z \times Γ → Z \times Γ \times {L,R,N}$ die Überführungsfunktion
+  \item $q_0 \in Q$ der Startzustand
+  \item $□ \in Γ - Σ$ das Blank
+  \item $E ⊆ Q$ die Menge der Endzustände 
+\end{compactitem} 
+\end{objDef}
+
+
+\newpage
+\section{Algorithmen}
+\compress
+\subsection{Endliche Automaten}
+%-------------------------------------------------------------------------------
+\begin{algo}{DEA → NEA}
+
+\compress
+Jeder DEA: NEA, bei dem δ immer eine ein-elementige Menge bestehend aus dem Nachfolgezustand liefert. 
+\end{algo}
+
+\compress
+\compress
+\begin{algo}{NEA → DEA (Potenzmengenkonstruktion)}
+
+\compress
+Sei $N = (Q_N,Σ,δ_N,q_{0N},F_N)$ ein $NEA$. Der äquivalente $DEA$ $(Q_D,Σ,δ_D,q_{0D},F_D)$:\\
+$Q_D = P(Q_N)$ \\
+$q_{0D} = \{q_{0N}\}$ \\
+$F_D = \{ S ∈ Q_D | S ∩ F_N ≠ ∅ \}$ \\
+$δ_D(S,a) = \bigcup\limits_{p \in S} δ_N(p,a),$ für alle $S \in Q_D, a \in Σ $\\
+Oft nicht alle Zustände erreichbar. Die Menge der erreichbaren Zustände R(A) eines Automaten A:
+\compress
+\begin{compactitem}
+  \item $q_0 \in R(A) $
+  \item wenn $q \in R(A)$ und $δ(q,a) = p,$ dann $p \in R(A)$ 
+\end{compactitem}
+\end{algo}
+
+
+\compress
+\begin{expl}
+\begin{verbatim}
+NEA:   dN |   a   |   b          dD  |     |   a    |   b       
+     ----------------------   ------------------------------                        
+    → q0  | q0,q1 | q1,q2       q0   | q0: | q0,q1    | q1,q2    →| S0 := {q0}                  
+      q1* |  q0   |  q2       _______|     | U q0,q1  | U q1,q2  →| S1 := {q0,q1}*, S2 := {q1,q2}*             
+      q2  |  q1   |  q2        q0,q1 | q0: | q0,q1    | q1,q2         
+                                     | q1: | q0       | q2                         
+DEA:   dD | a  | b            _______|     | U q0,q1  | U q1,q2                                                       
+     ---------------           q1,q2 | q1: | q0       | q2                         
+    → S0  | S1 | S2                  | q2: | q1       | q2                         
+      S1* | S1 | S2           _______|     | U q0,q1  | U q2     →| S3 := {q2}                
+      S2* | S1 | S3              q2  | q2: | q1       | q2            
+      S3  | S4 | S3           _______|     | U q1     | U q2     →| S4 := {q1}*
+      S4* | S0 | S3              q1  | q1: | q0       | q2                          
+                                     |     | U q0     | U q2                            
+\end{verbatim}
+\end{expl}
+
+
+
+%-------------------------------------------------------------------------------
+\compress
+\begin{algo}{$ε$NEA → DEA}
+
+\compress
+Sei $E = (Q_E,Σ,δ_E,q_{0E},F_E)$ ein $εNEA$. Der äquivalente $DEA$ $(Q_D,Σ,δ_D,q_{0D},F_D)$:\\
+$Q_D$ = Menge aller Teilmengen $S$ von $Q_E$, für die $ε$-Hülle(S)\\
+$q_{0D} = ε$-Hülle($q_0$)\\
+$F_D = \{S \in Q_D | S ∩ F_E ≠ ∅ \}$\\
+$δ_D(S,a) = \bigcup\limits_{p \in S} ε$-Hülle($δ_E(p,a)$), für alle $S \in Q_D, a \in Σ $\\
+\end{algo}
+\compress
+
+\begin{expl}
+
+
+\begin{minipage}[t]{1\linewidth}
+  \begin{minipage}[t]{0.3\linewidth}
+    \begin{verbatim}
+eNEA:
+   dE |  a  |  b  | eps
+---------------------
+-> 0* | 0,1 |  1  |  1
+   1  | 0,2 |  3  | 
+   2  |  3  |  3  | 1,3
+   3  |  0  |  2  |  1
+
+1.Schritt: eps-Hüllen 
+    0 | 0: 1
+      | 1: 1
+   ___|    0,1 
+    1 | 1: 1
+   ___|    1
+    2 | 2: 1,3
+      | 1: 1
+      | 3: 1,2
+   ___|    1,2,3 
+    3 | 1: 1
+      | 3: 1,3
+      |    1,3
+    \end{verbatim}
+  \end{minipage}
+  \begin{minipage}[t]{0.7\linewidth}
+    \begin{verbatim}
+2.Schritt: dD berechnen
+
+dD      |    a     eHüllen       |   b      eHüllen 
+-----------------------------------------           Neue Zustände:
+0,1     |  0: 0 -> 0,1           |  0: 1 -> 1       S0 := {0,1}*
+        |     1 -> 1             |  1: 3 -> 1,3     S1 := {0,1,2,3}*   
+        |  1: 0 -> 0,1           |     => 1,3       S2 := {1,3}
+        |     2 -> 1,2,3         |                  S3 := {1,2,3}
+________|        U 0,1,2,3       |
+0,1,2,3 |  0: 0 -> 0,1           |  0: 1 -> 1       (->: eps-Hülle)
+        |  1: 0 -> 0,1           |  1: 3 -> 1,3     ( U: Vereinigung  
+        |     2 -> 1,2,3         |  2: 3 -> 1,3          eps-Hüllen)
+        |  2: 3 -> 1,3           |  3: 2 -> 1,2,3      
+        |  3: 0 -> 0,1           |        U 1,2,3      
+________|        U 0,1,2,3       |
+ 1,3    |  1: 0 -> 0,1           |  1: 3 -> 1,3   
+        |     2 -> 1,2,3         |  3: 2 -> 1,2,3 
+        |  3: 0 -> 0,1           |        U 1,2,3    Ergebnis:
+________|        U 0,1,2,3       |                   dD | a  | b
+ 1,2,3  |  1: 0 -> 0,1           |  1: 3 -> 1,3     --------------      
+        |     2 -> 1,2,3         |  2: 3 -> 1,3    ->S0*| S1 | S2
+        |  2: 3 -> 1,3           |  3: 2 -> 1,2,3    S1*| S1 | S3
+        |  3: 0 -> 0,1           |        U 1,2,3    S2 | S1 | S3
+        |        U 0,1,2,3       |                   S3 | S1 | S3
+    \end{verbatim}
+  \end{minipage}
+\end{minipage}
+
+\end{expl}
+
+%-------------------------------------------------------------------------------
+\newpage
+\begin{algo}{Minimierung von Automaten (Markierungsalgorithmus)}
+
+\compress
+Sei $D=(Q_D,Σ,δ_D,q_{0D},F_D)$ ein DEA. Der zu $D$ äquivalente minimale DEA $D_{min}$
+ergibt sich durch zusammenfassen der äquivalenten Zustände in $Q_D$.\\
+Zwei Zustände $p,q$ aus $Q$ heißen äquivalent, falls für alle $w \in Σ^*$ gilt:
+$δ^*(p,w)\in F$ gdw. $δ^*(q,w)\in F$.
+\end{algo}
+
+\compress
+\begin{expl}
+\begin{minipage}[t]{1\linewidth}
+  \begin{minipage}[t]{0.25\linewidth}
+    \begin{verbatim}
+DEA = (,{0,1,2,3,4,5,6}
+      ,{a,b},dA,0,{1})
+
+       da | a | b
+     -> 0 | 3 | 1 -
+        1*| 2 | 2 -
+        2 | 6 | 6 -
+        3 | 5 | 2 -
+        4 | 6 | 3 n.e.
+        5 | 0 | 6 -
+        6 | 3 | 1 -
+    \end{verbatim}
+  \end{minipage}
+  \begin{minipage}[t]{0.7\linewidth}
+    \begin{verbatim}
+Schritt -: * Prüfen welche Zustände erreichbar sind.
+Schritt 0: * Tabelle mit verbliebenen Zuständen  
+Schritt 1: * Initialisieren: Alle Paare mit einem akzep. Zustand markieren
+Schritt 2: * Tabelle mit verbleibenden Paaren.
+Schritt 3: * Prüfen ob verb. Paare bei Übergang (mit bel. Symbol) 
+             in mark. Paar übergehen.
+           * Wiederholen bis keine neuen Markierungen mehr hinzukommen.
+          -> Verbleibende Zustandspaare sind äquivalente Zustände.
+Schritt 4: * Äquivalente Zustande zusammenfassen.
+Schritt 5: * Neue Übergangsfunktion für Minimalautomaten. 
+    \end{verbatim}
+  \end{minipage}
+\end{minipage}
+\compress
+\begin{minipage}[t]{1\linewidth}
+  \begin{minipage}[t]{0.2\linewidth}
+    \begin{verbatim}
+1 X        
+2 Y X      
+3 Y X Z    
+5 Y X _ Z  
+6 _ X Y Y Y  
+  0 1 2 3 5
+  
+X = Init.
+Y = Runde1
+Z = Runde2
+    \end{verbatim}
+  \end{minipage}
+  \begin{minipage}[t]{0.4\linewidth}
+    \begin{verbatim}
+      a    b   
+0,2  3,6  1,6 |Y| |
+0,3  3,5  1,2 |Y| |
+0,5  3,0  1,6 |Y| |
+0,6  3,3  1,1 | | |<- 
+2,3  6,5  6,2 | |Z|
+2,5  6,0  6,6 | | |<-
+2,6  6,3  6,1 |Y| |
+3,5  5,0  2,6 | |Z|
+3,6  5,3  2,1 |Y| |
+5,6  0,3  6,1 |Y| |
+    \end{verbatim}
+  \end{minipage}
+  \begin{minipage}[t]{0.4\linewidth}
+    \begin{verbatim}
+Zustände Dmin:
+  S1 = 0,6
+  S2 = 1
+  S3 = 2,5
+  S4 = 3
+Delta Dmin
+  d   a   b
+  S1  S4  S2
+  S2  S3  S3
+  S3  S1  S1
+  S4  S3  S3
+    \end{verbatim}
+  \end{minipage}
+\end{minipage}
+\end{expl}
+
+
+
+
+%-------------------------------------------------------------------------------
+
+\begin{algo}{Kombination endlicher Automaten}
+
+\compress
+Seien $A_1=(Q_1,Σ,δ_1,q_{01},F_1)$ und $A_2=(Q_2,Σ,δ_2,q_{02},F_2)$ bel. EA, 
+welche die Sprachen $L_1$ und $L_2$ akzeptieren.
+
+
+\begin{algo}{Komplement} 
+
+\compress
+EA für $Σ^*\textbackslash L(A_1)$ ensteht aus $A_1$ durch Vertauschen von akzeptierenden und nicht-akzeptierenden Zuständen. \\
+Konstruktion nicht für NEA und eNEA.
+\end{algo}
+
+%%-------------------------------------------------------------------------------
+\compress
+\compress
+\begin{algo}{Vereinigung} 
+
+\compress
+Der Vereinigungsautomat von $A_1$ und $A_2$ entsteht durch Einfügen eines 
+neuen Startzustandes $q_0$ mit $ε$-Übergängen zu den Startzuständen $q_{01}$ und $q_{02}$.
+\end{algo}
+
+
+%%-------------------------------------------------------------------------------
+\compress
+\compress
+\begin{algo}{Schnitt} 
+
+\compress
+Konstruktion des Produktautomaten $A_1 \times A_2 = (Q_1 x Q_2, Σ, δ,( q_{01}, q_{02} ),F_1 \times F_2)$ mit \\
+$δ((q_1,q_2),a)= \{ (p_1,p_2) | p_1 \in δ_1(q_1,a)$ und $p_2 \in δ_2(q_2,a) \}$ \\
+Die Zustände des neuen Automaten sind Paare von Zuständen der ursprünglichen Automaten.
+Neuer Automat nach Eingabe $w$ in Zustand $(r,s)$ gdw. (nach Eingabe $w$) $A_1$ in Zustand $r$ und $A_2$ in Zustand $s$.
+\end{algo}
+
+%-------------------------------------------------------------------------------
+\compress
+\compress
+\begin{algo}{Konkatenation} 
+
+\compress
+$A_1 ∘ A_2 = (Q_1 ∪ Q_2), Σ, δ, q_{01}, F_{02})$ mit: \\
+$δ(q,a)=$
+
+\compress 
+\begin{compactitem}
+  \item $δ_1(q,a)$        falls $q \in Q_1$ und $(q ∉ F_1$ oder $a ≠ ε)$
+  \item $δ_2(q,a)$ 		 falls $q \in Q_2$
+  \item $\{q_{02}\} ∪ δ_1(q,ε)$ falls $q \in F_1$ und $a = ε$
+\end{compactitem}
+
+\compress
+Automat entsteht durch Hintereinanderschalten von akzeptierenden Zuständen durch $ε$-Übergänge.
+\end{algo}
+
+%-------------------------------------------------------------------------------
+\compress
+\compress
+\begin{algo}{Kleene-Abschluss} 
+
+\compress
+Sei $A=(Q,Σ,δ,q_{0},F)$ Automat für L.\\
+Sei $A^*=(Q ∪ \{q_s,q_f\},Σ,δ',q_s,\{q_f\})$ der Automat für den Kleene-Abschluss von L, mit \\
+$δ'(q,a) =$ 
+
+\compress 
+\begin{compactitem}
+  \item $δ(q,a)$ 		falls $a \in Σ$ und $q \in Q$
+  \item $\{q_0,q_f\} ∪ δ(q,ε)$ 	falls $a = ε$ und $q \in F$
+  \item $δ(q,ε)$				falls $a = ε$ und $q \in Q \textbackslash F$
+  \item $\{q_0,q_f\}$			falls $a = ε$ und $q = q_s$
+  \item $∅$					sonst
+\end{compactitem}
+\end{algo}
+
+
+\end{algo}
+
+
+%% Kleene-Abschluss
+% Transformation regulärer Ausdruck, DEA Skriipt S.3.3
+
+%-------------------------------------------------------------------------------
+%\subsection{Grammatiken}
+
+%\ergaenzen{umbauen einer Grammatik TI:10}
+
+%\begin{algo}{Vereinfachen von Grammatiken I}
+%Gemäß Definition ist die linke Seite einer Rechtslinearen Grammatik immer 
+%ein Nonterminal und die rechte Seite eine Wort aus $ΣV ∪ Σ ∪ {ε}$:\\
+%\begin{compactenum}
+  %\item $A -> aB$ zum Erzeugen neuer Buchstaben am Ende des abzuleitenden Wortes.
+  %\item $A -> a$ als terminierende Regel zum Erzeugen eines letzten Buchstabens,
+  %\item $A -> ε$ als terminierende Regel ohne Erzeugung eines Buchstabens.
+%\end{compactenum}
+
+%Vereinfachung der Grammatik, dass nur noch Regeln der Art 1 und 3 vorkommen.
+%\ergaenzen{Implementierung}
+
+%\end{algo}
+
+%-------------------------------------------------------------------------------
+
+
+
+%-------------------------------------------------------------------------------
+\newpage
+\begin{algo}{Eliminierung aller $ε$-Regeln}
+
+\compress
+Eine kontextfreie Grammatik $G=(V,Σ,S,P)$ heißt $ε$-frei,
+falls P keine Regeln der Art $A -> ε$, $A \in V$ enthält. \\
+Zur Erzeugung einer kontextfreien Sprache, die nicht das leere Wort
+enhält sind keine $ε$-Produktionen notwendig.\\
+Die Transformation erfolgt in 4 Schritten:
+
+\compress
+\begin{compactenum}
+\item Bestimmen aller Nichtterminale V1 von G die linke Seite einer $ε$-Regel sind.
+\item Bestimmen aller Nichtterminale V2 aus denen das leere Wort ableitbar ist.
+\item Für jede Regel, deren rechte Seite ein Nichtterminal aus $V2$ enthält 
+      Regel ohne dieses Terminal einführen.
+\item Elimination aller $ε$-Regeln.
+\end{compactenum}
+\end{algo}
+
+\compress
+\compress
+\begin{expl}
+\begin{minipage}[t]{1\linewidth}
+  \begin{minipage}[t]{0.3\linewidth}
+    \begin{verbatim}
+G = ({ab}, {ABCS} , P, S)
+P = { A → CC  | bA 
+    , B → Sab | a  
+    , C → ""  | B  | aCb 
+    , S → ACa | a 
+    }
+    \end{verbatim}
+  \end{minipage}
+  \begin{minipage}[t]{0.325\linewidth}
+    \begin{verbatim}
+1. V1= { C }
+2. V2= { A, B, C, S} 
+3. V3 = Alle Kombinationen!!!
+   A → CC  | C  | ""  | bA | b
+   B → Sab | ab | a   | ""
+   C → B   | "" | aCb | ab
+   S → ACa | Ca | Aa  | a 
+    \end{verbatim}
+  \end{minipage}
+  \begin{minipage}[t]{0.3\linewidth}
+    \begin{verbatim}
+4. eps-Regeln aus V3 löschen:
+   P = { A → CC  | C   | bA | b     
+       , B → Sab | ab  | a      
+       , C → B   | aCb | ab 
+       , S → ACa | Ca  | Aa | a
+       }     
+    \end{verbatim}
+  \end{minipage}
+\end{minipage}
+\end{expl}
+
+%-------------------------------------------------------------------------------
+\compress
+\begin{algo}{Chomsky Normalform} 
+
+\compress
+Eine kontextfreie Grammatik ist in Chomsky-Normalform (CNF), falls alle Regeln die Form 
+A → BC oder A → a haben, wobei A,B,C Variablen und a Terminalsymbol.
+
+\compress
+\begin{compactenum}
+  \item Elimination der $ε$-Regeln.
+  \item Eliminieren von Regeln der Form A → B:
+  \begin{compactenum}
+    \item Elimination von Zyklen:\\
+		Ersetzen von Variablen $A_1,\dots,A_k$ 
+          für die es einen Zyklus der Form $A_1 → A_2 →\dots→ A_n$ gibt durch eine einzige Variable $A$.
+    \item Sortieren der Verbleibenden Variablen, so das $A_i → A_j$ impliziert $i<j$. \\
+          Beginnend mit der letzten Variablen schrittw. ersetzten von Regeln $A_i → A_j$
+          durch $A_i → x_1, \dots, A_i → x_k$,
+  \end{compactenum}  
+  \item Nur noch Regeln der Form $A → a$ sowie $A → x$ mit $|x|>1$.\\
+        Für jedes Terminalsymbol neue Variable $A_a$ und Regel $A_a → a$,
+        und ersetze jedes Vorkommen von eines Terminalsymbols in x durch entsprechende Variable.
+  \item Nur noch Regeln der Form $A → B_1B_2 \dots$ nicht in CNF. \\
+        Neue Variable $C_2,\dots,C_{k-1}$ ein und ersetzte Regel durch: \\ 
+	   $A → B_1C_2$, $C_2 → B_2C_3$, \dots , $C_{k-1} → B_{k-1}B_{k}$
+\end{compactenum}  
+\end{algo}
+
+\compress
+\compress
+\begin{expl}
+\begin{minipage}[t]{1\linewidth}
+  \begin{minipage}[t]{0.5\linewidth}
+    \begin{verbatim}
+Grammatik ohne e-Regeln:
+G = ({ab}, {ABCS} , P, S)
+P = { A → CC  | C   | bA | b     
+    , B → Sab | ab  | a      
+    , C → B   | aCb | ab 
+    , S → ACa | Ca  | Aa | a
+    }     
+Schritt 2: Elimination A → B
+2.1 Keine Zyklen vorhanden.
+2.2 Sortieren (nur auf Regeln A → B achten):      
+    A = 1
+    C = 2
+    B = 3
+    Ersetzten:
+    C → Sab | ab  | a       
+    A → Sab | ab  | a  | aCb 
+Ergebnis:
+    A → CC  | Sab | ab  | a   | aCb | bA | b     
+    B → Sab | ab  | a      
+    C → Sab | ab  | a   | aCb | ab 
+    S → ACa | Ca  | Aa  | a
+    \end{verbatim}
+  \end{minipage}
+  \begin{minipage}[t]{0.5\linewidth}
+    \begin{verbatim}
+Schritt 3:
+    Für jedes TS neue Variable und Regel:
+    X → a
+    Y → b
+    Ersetzen in |x| > 1:
+    A → CC  | SXY | XY  | a   | XCY | YA | b
+    B → SXY | XY  | a
+    C → SXY | XY  | a   | XCY | XY
+    S → ACX | CX  | AX  | a
+Schritt 4: Ersetzen der Regeln A → BCD... :
+    X → a
+    Y → b
+    A → CC | SM | XY | a  | XN | YA | b
+    M → XY
+    N → CY
+    B → SO | XY | a
+    O → XY
+    C → SP | XY | a  | XQ | XY
+    P → XY
+    Q → CY
+    S → AR | CX | AX | a
+    R → CX                (Grammatik in CNF)
+    \end{verbatim}
+  \end{minipage}
+\end{minipage}
+\end{expl}
+
+%-------------------------------------------------------------------------------
+\compress
+\begin{algo}{CYK-Algorithmus} 
+
+\compress
+Wortproblem für Type 1,2,3-Grammatiken entscheidbar. Algortihmus (Erzeugungsbaum): exponentiellen Aufwand. \\
+Für ktx.-freie Sprachen in CNF schneller: CKY-Algorithmus.
+\end{algo}
+
+\compress
+\compress
+\begin{expl}
+\begin{minipage}[t]{1\linewidth}
+  \begin{minipage}[t]{0.2\linewidth}
+    \begin{verbatim}
+Grammatik in CNF:
+
+S → AB
+A → CD | CF
+B → c  | EB
+C → a
+D → b
+E → c
+F → AD
+
+    \end{verbatim}
+  \end{minipage}
+  \begin{minipage}[t]{0.4\linewidth}
+    \begin{verbatim}
+x =   a   b   c   c   c
+    ---------------------
+ j  | C | D |B,E|B,E|B,E| i → 
+ ↓  ---------------------
+    | A |   |   | B |    
+    -----------------
+    |   |   | B |    
+    -------------
+    |   |   |  Wenn Wurzel	 					 
+    ---------  des Kastens belegt,
+    | S |      liegt x in Sprache.   
+    -----
+    \end{verbatim}
+  \end{minipage}
+  \begin{minipage}[t]{0.4\linewidth}
+    \begin{verbatim}
+Illustration für Reihenfolge		
+    ---------------------
+ j  | 1 |   |   |   | 4 | i →
+ ↓  ---------------------
+    | 2 |   |   | 3 |
+    -----------------
+    | 3 |   | 2 |
+    -------------
+    | 4 | 1 |  Felder mit
+    ---------  gleicher Nummer
+    | X |      werden miteinander   
+    -----      verglichen.
+    \end{verbatim}
+  \end{minipage}
+\end{minipage}
+\end{expl}
+
+
+
+%\newpage
+%\printbibliography
+
+
+%% Hack damit das Inhaltsverzeichnis nicht ins Anhangsverzeichnis gedruckt wird: Indexname bleibt leer
+%\newpage
+%\phantomsection \addcontentsline{toc}{chapter}{Stichwortverzeichnis}
+%\renewcommand{\indexname}{Stichwortverzeichnis} 
+%\renewcommand*{\indexpagestyle}{scrheadings}
+%\printindex
+
+
+\end{document}
